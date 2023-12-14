@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"net/http"
-	"projHugo/internal/service/models"
+	"projHugo/hugoproxy/proxy/internal/service/models"
 )
 
 type GeoServicer interface {
