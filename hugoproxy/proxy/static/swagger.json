@@ -1,0 +1,76 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "My API"
+  },
+  "host": "localhost:8080",
+  "basePath": "/api/address",
+  "paths": {
+    "/search": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "http",
+          "https"
+        ],
+        "summary": "Search for an address",
+        "operationId": "searchHandler",
+        "parameters": [
+          {
+            "x-go-name": "Query",
+            "description": "Query is the address to search for",
+            "name": "query",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/searchResponse"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Address": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object",
+          "additionalProperties": {},
+          "x-go-name": "Data"
+        },
+        "unrestricted_value": {
+          "type": "string",
+          "x-go-name": "UnrestrictedValue"
+        },
+        "value": {
+          "type": "string",
+          "x-go-name": "Value"
+        }
+      },
+      "x-go-package": "studentgit.kata.academy/zxcMentor/go-kata/course3/2.server/5.server_http_api/task3.2.5.1/hugoproxy/proxy"
+    }
+  },
+  "responses": {
+    "searchResponse": {
+      "description": "SearchResponse is a model for search response data",
+      "headers": {
+        "suggestions": {
+          "type": "array",
+          "description": "in: addresses"
+        }
+      }
+    }
+  }
+}
