@@ -4,7 +4,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/v5/middleware"
 	"net/http"
-	"studentgit.kata.academy/zxcMentor/go-kata/course3/2.server/5.server_http_api/task3.2.5.1/hugoproxy/proxy/internal/controller"
+	"projHugo/hugoproxy/proxy/internal/controller"
 )
 
 func StartRouter(controllers *controller.GeoController) *chi.Mux {

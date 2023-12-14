@@ -4,11 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"net/http"
+	"projHugo/internal/service/models"
 )
 
 type GeoServicer interface {
-	Search(query string) ([]*Address, error)
-	Geocode(lat, lon float64) ([]*Address, error)
+	Search(query string) ([]*models.Address, error)
+	Geocode(lat, lon float64) ([]*models.Address, error)
 }
 
 type geoServicer struct {
@@ -21,7 +22,13 @@ func NewGeoServicer(client *http.Client) GeoServicer {
 	}
 }
 
-func (g *geoServicer) Search(query string) ([]*Address, error) {
+const (
+	DadataURLsugg = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address"
+	DadataURLgeo  = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address"
+	APIKey        = "5086f9aa3d01c20cab4d1477df59cb0f1ab75497"
+)
+
+func (g *geoServicer) Search(query string) ([]*models.Address, error) {
 	req, err := http.NewRequest("POST", DadataURLsugg, bytes.NewBufferString(query))
 
 	req.Header.Set("Content-Type", "application/json")
@@ -31,7 +38,7 @@ func (g *geoServicer) Search(query string) ([]*Address, error) {
 	resp, err := g.client.Do(req)
 	defer resp.Body.Close()
 
-	var result SearchResponse
+	var result models.SearchResponse
 	err = json.NewDecoder(resp.Body).Decode(&resp)
 	if err != nil {
 
@@ -40,7 +47,7 @@ func (g *geoServicer) Search(query string) ([]*Address, error) {
 
 }
 
-func (g *geoServicer) Geocode(lat, lon float64) ([]*Address, error) {
+func (g *geoServicer) Geocode(lat, lon float64) ([]*models.Address, error) {
 	body := map[string]interface{}{
 		"lat": lat,
 		"lon": lon,
@@ -56,7 +63,7 @@ func (g *geoServicer) Geocode(lat, lon float64) ([]*Address, error) {
 	resp, err := g.client.Do(req)
 	defer resp.Body.Close()
 
-	var result GeocodeResponse
+	var result models.GeocodeResponse
 	err = json.NewDecoder(resp.Body).Decode(&resp)
 	if err != nil {
 

@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
-	"studentgit.kata.academy/zxcMentor/go-kata/course3/2.server/5.server_http_api/task3.2.5.1/hugoproxy/proxy/internal/controller"
-	"studentgit.kata.academy/zxcMentor/go-kata/course3/2.server/5.server_http_api/task3.2.5.1/hugoproxy/proxy/internal/service"
-	"studentgit.kata.academy/zxcMentor/go-kata/course3/2.server/5.server_http_api/task3.2.5.1/hugoproxy/proxy/router"
+	"projHugo/hugoproxy/proxy/internal/controller"
+	"projHugo/hugoproxy/proxy/internal/service"
+	"projHugo/hugoproxy/proxy/router"
 )
 
 //

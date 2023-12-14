@@ -1,4 +1,4 @@
-package service
+package models
 
 type Address struct {
 	Value             string                 `json:"value"`
@@ -37,9 +37,3 @@ type GeocodeResponse struct {
 	// in: addresses
 	Addresses []*Address `json:"suggestions"`
 }
-
-const (
-	DadataURLsugg = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address"
-	DadataURLgeo  = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address"
-	APIKey        = "5086f9aa3d01c20cab4d1477df59cb0f1ab75497"
-)

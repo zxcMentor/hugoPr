@@ -3,7 +3,8 @@ package controller
 import (
 	"encoding/json"
 	"net/http"
-	"studentgit.kata.academy/zxcMentor/go-kata/course3/2.server/5.server_http_api/task3.2.5.1/hugoproxy/proxy/internal/service"
+	"projHugo/internal/service"
+	"projHugo/internal/service/models"
 )
 
 type GeoController struct {
@@ -16,7 +17,7 @@ func NewController(service service.GeoServicer) *GeoController {
 
 func (g *GeoController) SearchHandler(w http.ResponseWriter, r *http.Request) {
 
-	var req service.SearchRequest
+	var req models.SearchRequest
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		http.Error(w, "Invalid request format", http.StatusBadRequest)
@@ -31,7 +32,7 @@ func (g *GeoController) SearchHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (g *GeoController) GeocodeHandler(w http.ResponseWriter, r *http.Request) {
-	var req service.GeocodeRequest
+	var req models.GeocodeRequest
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		http.Error(w, "Invalid request format", http.StatusBadRequest)
