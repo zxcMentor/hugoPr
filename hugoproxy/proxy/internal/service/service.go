@@ -3,6 +3,7 @@ package service
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"projHugo/hugoproxy/proxy/internal/service/models"
 )
@@ -36,12 +37,15 @@ func (g *geoServicer) Search(query string) ([]*models.Address, error) {
 	req.Header.Set("Authorization", "Token "+APIKey)
 
 	resp, err := g.client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("err do req %v", err)
+	}
 	defer resp.Body.Close()
 
 	var result models.SearchResponse
 	err = json.NewDecoder(resp.Body).Decode(&resp)
 	if err != nil {
-
+		return nil, fmt.Errorf("err decode js %v", err)
 	}
 	return result.Addresses, nil
 
