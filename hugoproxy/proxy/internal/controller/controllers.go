@@ -2,12 +2,15 @@ package controller
 
 import (
 	"encoding/json"
+	"proxy/internal/service"
+	"proxy/internal/service/models"
+
 	"net/http"
-	"projHugo/hugoproxy/proxy/internal/service"
-	"projHugo/hugoproxy/proxy/internal/service/models"
 )
 
 type Responder interface {
+	RespondWithError(w http.ResponseWriter, err error)
+	RespondWithSuccess(w http.ResponseWriter, data interface{})
 }
 
 type GeoController struct {

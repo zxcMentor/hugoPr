@@ -12,6 +12,7 @@ services:
       - "1313:1313"
     networks:
         - mylocal
+
   app:
     build: ./proxy
     container_name: proxy

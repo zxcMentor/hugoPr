@@ -7,7 +7,7 @@ WORKDIR /app
 # Копируем исходники приложения в рабочую директорию
 COPY . .
 # Скачиваем все зависимости
-RUN go mod init test && go mod tidy
+RUN go mod tidy
 
 # Собираем приложение
 RUN go build -o main

@@ -5,18 +5,18 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
-	cnt "projHugo/hugoproxy/proxy/internal/controller"
-	srv "projHugo/hugoproxy/proxy/internal/service"
-	rt "projHugo/hugoproxy/proxy/router"
+	"proxy/internal/controller"
+	"proxy/internal/service"
+	"proxy/router"
 )
 
 //
 
 func main() {
 	cl := &http.Client{}
-	geoService := srv.NewGeoServicer(cl)
-	geoController := cnt.NewController(geoService)
-	r := rt.StartRouter(geoController)
+	geoService := service.NewGeoServicer(cl)
+	geoController := controller.NewController(geoService)
+	r := router.StartRouter(geoController)
 
 	http.ListenAndServe(":8080", r)
 }
