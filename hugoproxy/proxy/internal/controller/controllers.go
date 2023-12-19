@@ -21,6 +21,18 @@ func NewController(service service.GeoServicer) *GeoController {
 	return &GeoController{service: service}
 }
 
+// SearchHandler handles search requests.
+// @Summary Search
+// @Description This endpoint processes search requests and returns search results.
+// @Tags Search
+// @Accept  json
+// @Produce  json
+// @Param query body searchUnm true "Search Query"
+// @Success 200 {object} string "Successfully processed search request"
+// @Failure 400 {string} string "Bad Request"
+// @Router /search [post]
+// NewSearchHandler создаёт новый HTTP хендлер для поисковых запросов.
+// Возвращает функцию, которая соответствует сигнатуре http.HandlerFunc.
 func (g *GeoController) SearchHandler(w http.ResponseWriter, r *http.Request) {
 
 	var req models.SearchRequest
@@ -38,6 +50,16 @@ func (g *GeoController) SearchHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// GeocodeHandler handles geocoding requests.
+// @Summary Handle geocoding
+// @Description This endpoint processes geocoding requests and returns the result.
+// @Tags GeoCoding
+// @Accept  json
+// @Produce  json
+// @Param query body geoCodeUnm true "Geocoding Query"
+// @Success 200 {string} string "Successfully processed geocoding"
+// @Failure 400 {string} string "Bad Request"
+// @Router /geocode [post]
 func (g *GeoController) GeocodeHandler(w http.ResponseWriter, r *http.Request) {
 	var req models.GeocodeRequest
 	err := json.NewDecoder(r.Body).Decode(&req)
