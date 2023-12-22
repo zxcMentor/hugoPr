@@ -1,0 +1,112 @@
+definitions:
+  controller.geoCodeUnm:
+    properties:
+      query:
+        type: string
+    type: object
+  controller.searchUnm:
+    properties:
+      query:
+        type: string
+    type: object
+  service.Credentials:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /geocode:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint processes geocoding requests and returns the result.
+      parameters:
+      - description: Geocoding Query
+        in: body
+        name: query
+        required: true
+        schema:
+          $ref: '#/definitions/controller.geoCodeUnm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully processed geocoding
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Handle geocoding
+      tags:
+      - GeoCoding
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint authenticates a user and returns a JWT token.
+      parameters:
+      - description: User Credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/service.Credentials'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: JWT Token
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "415":
+          description: Unsupported Media Type
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: User Login
+      tags:
+      - Authentication
+  /search:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint processes search requests and returns search results.
+      parameters:
+      - description: Search Query
+        in: body
+        name: query
+        required: true
+        schema:
+          $ref: '#/definitions/controller.searchUnm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully processed search request
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Search
+      tags:
+      - Search
+swagger: "2.0"
