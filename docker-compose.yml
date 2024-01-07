@@ -33,17 +33,14 @@ services:
     networks:
       - mylocal
   grafana:
-    image: grafana/grafana:latest
+    image: zxcmentor/mygrafana:latest
     ports:
       - "3000:3000"
     depends_on:
       - prometheus
     networks:
       - mylocal
-    volumes:
-      - grafana_data:/var/lib/grafana
-volumes:
-      grafana_data:
+
 networks:
     mylocal:
         driver: bridge
