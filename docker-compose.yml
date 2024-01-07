@@ -19,8 +19,31 @@ services:
       - "./hugo/content:/app/static"
     ports:
       - "8080:8080"
+      - "8081:8081"
     networks:
         - mylocal
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./proxy/prometheus:/etc/prometheus/prometheus.yaml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - app
+    networks:
+      - mylocal
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - mylocal
+    volumes:
+      - grafana_data:/var/lib/grafana
+volumes:
+      grafana_data:
 networks:
     mylocal:
         driver: bridge

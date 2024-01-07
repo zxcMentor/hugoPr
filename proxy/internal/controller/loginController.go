@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 	"proxy/internal/service"
-	"proxy/middleware"
+	"proxy/middlew"
 	"proxy/utils"
 )
 
@@ -23,6 +23,7 @@ import (
 // @Failure 500 {string} string "Internal Server Error"
 // @Router /login [post]
 func HandleLogin(w http.ResponseWriter, r *http.Request) {
+
 	// Extracting and unmarshalling data
 	var extraData utils.ExtractDataFromRequest
 	var err error
@@ -62,7 +63,7 @@ type JwtResponseBody struct {
 }
 
 func SendJwtResponse(w http.ResponseWriter, jwtToken string) {
-	response := middleware.JwtResponse{Body: JwtResponseBody{Token: jwtToken}}
+	response := middlew.JwtResponse{Body: JwtResponseBody{Token: jwtToken}}
 	jsonResponse, err := json.Marshal(response)
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)

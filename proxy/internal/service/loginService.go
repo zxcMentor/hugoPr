@@ -2,7 +2,7 @@ package service
 
 import (
 	"errors"
-	"proxy/middleware"
+	"proxy/middlew"
 )
 
 type Credentials struct {
@@ -35,7 +35,7 @@ func NewLoginController(options ...LoginControllerOption) *loginController {
 // Бизнес слой
 func AuthenticateUser(credentials Credentials) (string, error) {
 	if CheckLogin(credentials.Username) && CheckPassword(credentials.Password) {
-		return middleware.JwtCreate(), nil
+		return middlew.JwtCreate(), nil
 	}
 	return "", errors.New("unauthorized")
 }

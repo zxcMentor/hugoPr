@@ -1,9 +1,10 @@
 package router
 
 import (
+	"github.com/go-chi/chi/middleware"
 	"net/http"
 	"proxy/internal/controller"
-	"proxy/middleware"
+	"proxy/middlew"
 
 	"github.com/go-chi/chi"
 )
@@ -42,7 +43,7 @@ func PublicRouterOption() RouterOption {
 func PrivateRouterOption() RouterOption {
 	return func(rc *RouterConfig) {
 		var protectedRouter *chi.Mux = chi.NewRouter()
-		protectedRouter.Use(middleware.JWTAuthMiddleware)
+		protectedRouter.Use(middlew.JWTAuthMiddleware)
 		protectedRouter.Post("/address/geocode", controller.HandleGeoCode)
 		protectedRouter.Post("/address/search", controller.SearchHandler)
 
@@ -52,4 +53,11 @@ func PrivateRouterOption() RouterOption {
 func SetupRouter() http.Handler {
 	router := NewRouter(PublicRouterOption(), PrivateRouterOption())
 	return router
+}
+func StartRout() *chi.Mux {
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+	r.Post("/address/search", controller.SearchHandler)
+	r.Post("/address/geocode", controller.HandleGeoCode)
+	return r
 }

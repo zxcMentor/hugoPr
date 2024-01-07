@@ -26,11 +26,13 @@ func (g geoCodeUnm) Process() error {
 // @Failure 400 {string} string "Bad Request"
 // @Router /geocode [post]
 func HandleGeoCode(w http.ResponseWriter, r *http.Request) {
+
 	log.Println("HandleGeoCode - work now")
 
 	// Extracting the format of the incoming request
 	var extraData utils.ExtractDataFromRequest
 	var err error
+
 	extraData, err = extraData.Extract(r)
 	if err != nil {
 		log.Println(err)
@@ -58,4 +60,5 @@ func HandleGeoCode(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(geoResult.Result))
+
 }

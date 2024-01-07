@@ -1,43 +1,68 @@
 package main
 
 import (
-	"context"
-	"log"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"net/http"
-	"os"
-	"os/signal"
-	"proxy/router"
-	"time"
+)
+
+var (
+	requestDuration = prometheus.NewHistogramVec(
+		prometheus.HistogramOpts{
+			Name:    "http_request_duration_seconds",
+			Help:    "Request duration in seconds",
+			Buckets: prometheus.DefBuckets,
+		},
+		[]string{"endpoint"},
+	)
+
+	requestCount = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "http_request_total",
+			Help: "Request total",
+		},
+		[]string{"endpoint"},
+	)
+
+	cacheDuration = prometheus.NewHistogramVec(
+		prometheus.HistogramOpts{
+			Name:    "cache_duration_seconds",
+			Help:    "Cache duration in seconds",
+			Buckets: prometheus.DefBuckets,
+		},
+		[]string{"method"},
+	)
+
+	dbDuration = prometheus.NewHistogramVec(
+		prometheus.HistogramOpts{
+			Name:    "db_duration_seconds",
+			Help:    "DB duration in seconds",
+			Buckets: prometheus.DefBuckets,
+		},
+		[]string{"method"},
+	)
+
+	externalAPIDuration = prometheus.NewHistogramVec(
+		prometheus.HistogramOpts{
+			Name:    "external_api_duration_seconds",
+			Help:    "API duration in seconds",
+			Buckets: prometheus.DefBuckets,
+		},
+		[]string{"method"},
+	)
 )
 
 func main() {
-
-	rout := router.SetupRouter
-
-	srv := &http.Server{
-		Addr:    ":8080",
-		Handler: rout(),
-	}
-
-	// Запуск сервера в отдельной горутине
+	prometheus.MustRegister(requestDuration)
+	prometheus.MustRegister(requestCount)
+	prometheus.MustRegister(cacheDuration)
+	prometheus.MustRegister(dbDuration)
+	prometheus.MustRegister(externalAPIDuration)
 	go func() {
-		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("listen: %s\n", err)
-		}
+		http.Handle("/metrics", promhttp.Handler())
+		http.ListenAndServe(":8081", nil)
 	}()
 
-	// Ожидание сигнала для graceful shutdown
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, os.Interrupt)
-	<-quit
+	http.ListenAndServe(":8080", nil)
 
-	// Контекст с таймаутом для завершения работы сервера
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
-	// Завершение работы сервера
-	if err := srv.Shutdown(ctx); err != nil {
-		log.Fatalf("Server Shutdown Failed:%+v", err)
-	}
-	log.Println("Server Exited Properly")
 }
